@@ -14,5 +14,7 @@
 //= require jquery_ujs
 //= require phaser
 //= require character
+//= require worldMap
+//= require battleState
 //= require game
 //= require_tree .

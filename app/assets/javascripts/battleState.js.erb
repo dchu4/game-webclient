@@ -1,0 +1,31 @@
+var player;
+var cursors;
+
+var battleState = {
+  preload: function(){
+    game.load.image('logo','<%= asset_path "Phaser-Logo-Small.png" %>');
+    game.load.image('star','<%= asset_path "star.png" %>');
+    game.load.spritesheet('dude','<%= asset_path "dude.png" %>',32,48);
+  },
+  create: function(){
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.add.sprite(0,0,'logo');
+    star = game.add.sprite(200,200,'star');
+    game.physics.enable(star);
+    star.body.enableBody = true;
+
+    star.body.immovable = true;
+
+    player = character;
+
+    cursors = game.input.keyboard.createCursorKeys();
+  },
+  update: function(){
+    game.physics.arcade.collide(star,character.player, changeWorldState);
+    character.moveCharacter();
+  }
+};
+
+var changeWorldState = function(player,star){
+  game.state.start('worldMap');
+}

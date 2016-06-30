@@ -1,0 +1,50 @@
+var cursors;
+var character;
+var tiles;
+
+var worldMap = {
+  preload: function(){
+    game.load.image('sky','<%= asset_path "sky.png" %>');
+    game.load.image('star','<%= asset_path "star.png" %>');
+    game.load.spritesheet('dude','<%= asset_path "dude.png" %>',32,48);
+    game.load.spritesheet('tiles','<%= asset_path "Forest-Tile.png" %>',32,32);
+  },
+  create: function(){
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    //game.add.sprite(0,0,'sky');
+
+    tiles = game.add.group();
+
+    for(var i = 0; i <= 608; i += 32){
+      for(var j = 0; j <= 800; j += 32){
+        tiles.create(j,i, 'tiles',1);
+      }
+    }
+
+    tiles.enableBody = true;
+    game.physics.enable(tiles);
+    tiles.immovable = true;
+
+    star = game.add.sprite(200,200,'star');
+    game.physics.enable(star);
+    star.body.enableBody = true;
+
+    star.body.immovable = true;
+
+    character = new Character(game,"tester","Warrior",200,20);
+
+    cursors = game.input.keyboard.createCursorKeys();
+
+  },
+  update: function(){
+    game.physics.arcade.overlap(tiles,character.player, changeBattleState, null, this);
+    character.moveCharacter();
+  }
+};
+
+var changeBattleState = function(tiles,player){
+  if(Math.floor((Math.random() * 2000) + 1)  == 1000){
+    game.state.start('battleState');
+  }
+}

@@ -1,19 +1,16 @@
 
-function Character(game,name,characterClass,hp,attack,movement,player){
+function Character(game,name,characterClass,hp,attack){
   var x = game.world.randomX;
   var y = game.world.randomY;
-  var cursors = movement;
 
-  this.game = game;
-  this.name = name;
-  this.class = characterClass;
-  this.hp = hp;
-  this.attack = attack;
-  this.isDefending = false;
-  this.player = game.add.sprite(x,y,'dude');
+  this.charName = name;
+  this.charHp = hp;
+  this.charAttack = attack;
+  this.player = game.add.sprite(400,400,'dude');
 
   game.physics.enable(this.player, Phaser.Physics.ARCADE);
-  this.player.body.immovable = true;
+  this.player.enableBody = true;
+  this.player.body.immovable = false;
   this.player.body.collideWorldBounds = true;
   this.player.body.setSize(20,32,5,16);
 
