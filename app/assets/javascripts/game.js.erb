@@ -1,0 +1,10 @@
+var game = new Phaser.Game(800,640,Phaser.AUTO, 'canvasDiv');
+
+//game.state.add('main', main);
+game.state.add('worldMap', worldMap);
+game.state.add('battleState', battleState);
+game.state.add('dungeonOneState', dungeonOneState);
+//game.state.add('dungeonTwoState', dungeonTwoState);
+//game.state.add('dungeonThreeState', dungeonThreeState);
+
+game.state.start('worldMap');

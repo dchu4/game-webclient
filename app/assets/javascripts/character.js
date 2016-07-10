@@ -1,12 +1,12 @@
 
-function Character(game,name,characterClass,hp,attack){
+function Character(xPos,yPos,game,name,characterClass,hp,attack){
   var x = game.world.randomX;
   var y = game.world.randomY;
 
   this.charName = name;
   this.charHp = hp;
   this.charAttack = attack;
-  this.player = game.add.sprite(400,400,'dude');
+  this.player = game.add.sprite(xPos,yPos,'dude');
 
   game.physics.enable(this.player, Phaser.Physics.ARCADE);
   this.player.enableBody = true;

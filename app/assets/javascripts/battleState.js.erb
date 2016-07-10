@@ -1,31 +1,119 @@
-var player;
+var character2;
 var cursors;
+var star;
+var button;
+var charObj;
+var charText;
+var enemyText;
+var enemy = {
+      name: "Baddie", 
+      enemyType: "Slime", 
+      enemyHp: 200, 
+      enemyAttack: 20, 
+      alive: true, 
+      
+    };
+var game_units = [];
+
+var doors;
+var enemySpawns;
+var chests;
+
+var counter = 0;
+
+var characters;
 
 var battleState = {
   preload: function(){
-    game.load.image('logo','<%= asset_path "Phaser-Logo-Small.png" %>');
+    game.load.image('background','<%= asset_path "battle_background.png" %>');
     game.load.image('star','<%= asset_path "star.png" %>');
+    game.load.image('attack','<%= asset_path "attack_button.png" %>');
     game.load.spritesheet('dude','<%= asset_path "dude.png" %>',32,48);
+
+
+    characters = fetch('http://localhost:3000/characters.json')
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(data){
+        charObj = {
+          name: data[0].character_name,
+          charClass: data[0].character_class,
+          charHp: 300,
+          charAttack: data[0].attack,
+          alive: true
+        };
+
+        //game_units.push(charObj);
+
+        charText = game.add.text(50, 400,charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
+
+        enemyText = game.add.text(20, 20,enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
+
+      });
   },
   create: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.add.sprite(0,0,'logo');
-    star = game.add.sprite(200,200,'star');
-    game.physics.enable(star);
-    star.body.enableBody = true;
+    game.add.sprite(0,0,'background');
+    //star = game.add.sprite(200,200,'star');
+    //star.body.enableBody = true;
 
-    star.body.immovable = true;
+    //star.body.immovable = true;
+    // game_units.push(charObj);
+    // setInterval(game_units.push(enemy),20000);
 
-    player = character;
+    //console.log(game_units);
+
+    //character2 = new Character(game,"tester","Warrior",200,20);
+
+    button = game.add.button(560,366,'attack');
+
+    button.onInputUp.add(attackFunction, this);
+
+    // button.visible = false;
 
     cursors = game.input.keyboard.createCursorKeys();
+
   },
   update: function(){
-    game.physics.arcade.collide(star,character.player, changeWorldState);
-    character.moveCharacter();
+    if(enemy.enemyHp  <= 0){
+      enemy.enemyHp = 200;
+      counter = 0;
+      changeWorldState();
+    }
+    if(counter % 2 != 0){
+      charObj.charHp = charObj.charHp - enemy.enemyAttack;
+      charText.setText(charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp);
+      counter++;
+    }
+    // game.physics.arcade.collide(star,character2.player, changeWorldState);
+    // character2.moveCharacter();
   }
 };
 
-var changeWorldState = function(player,star){
+var attackFunction = function(){
+  enemy.enemyHp = enemy.enemyHp - charObj.charAttack;
+  enemyText.setText(enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp);
+  counter++;
+  // if(enemy.enemyHp < 1){
+  //   enemy.alive = false;
+  // }
+  // button.visible = false;
+  // next_turn();
+}
+
+var next_turn = function(){
+  current_unit = game_units.shift();
+
+  if(current_unit.alive){
+    current_unit.act();
+    game_units.push(current_unit);
+  }
+  else{
+    next_turn();
+  }
+}
+
+var changeWorldState = function(){
   game.state.start('worldMap');
 }
