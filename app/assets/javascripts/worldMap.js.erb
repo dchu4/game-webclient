@@ -53,9 +53,15 @@ var worldMap = {
     game.physics.enable(enemySpawns);
     enemySpawns.immovable = true;
 
+    //console.log(game.cache.characterData);
 
+    if(game.cache.player_position){
 
-    character = new Character(400,400,game,"tester","Warrior",200,20);
+      character = new Character(game.cache.player_position.x,game.cache.player_position.y,game,"tester","Warrior",200,20);
+    }
+    else{
+      character = new Character(200,200,game,"tester","Warrior",200,20);
+    }
 
     cursors = game.input.keyboard.createCursorKeys();
 
@@ -63,7 +69,7 @@ var worldMap = {
   update: function(){
     game.physics.arcade.collide(blockedLayer,character.player);
     game.physics.arcade.overlap(doors, character.player, changeDungeonOneState, null, this);
-    game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
+    //game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
     character.moveCharacter();
   }
 };
@@ -73,5 +79,7 @@ var changeBattleState = function(enemySpawns, player){
 }
 
 var changeDungeonOneState = function(doors, player){
+  game.cache.player_position = player.position;
+  //console.log(player.position);
   game.state.start('dungeonOneState');
 }

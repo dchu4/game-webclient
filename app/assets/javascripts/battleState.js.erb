@@ -5,15 +5,171 @@ var button;
 var charObj;
 var charText;
 var enemyText;
-var enemy = {
-      name: "Baddie", 
-      enemyType: "Slime", 
-      enemyHp: 200, 
-      enemyAttack: 20, 
-      alive: true, 
-      
-    };
-var game_units = [];
+// var enemy = {
+//       name: "Baddie", 
+//       enemyType: "Slime", 
+//       enemyHp: 200, 
+//       enemyAttack: 20, 
+//       alive: true, 
+//       isNpc: true
+//     };
+
+var gameUnits = [
+      {
+        name: "Clarence", 
+        unitType: "Warrior", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: false,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "Doge", 
+        unitType: "Rogue", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: false,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "Nyan Cat", 
+        unitType: "Beast Tamer", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: false,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "Chewy", 
+        unitType: "Wookie", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: false,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "The Blob", 
+        unitType: "Slime", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: true,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "Clamps", 
+        unitType: "Robot", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: true,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "Scrooge", 
+        unitType: "Person", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: true,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "Mr Crab", 
+        unitType: "Crab", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: true,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+          }
+        }
+      },
+      {
+        name: "IT", 
+        unitType: "Clown", 
+        unitHp: 200, 
+        unitAttack: 20, 
+        alive: true, 
+        isNpc: true,
+        act: function(){
+          if(this.isNpc == false){
+            button.visible = true;
+            //console.log(button.visible);
+          }
+          if(this.isNpc == true){
+            button.visble = false;
+            game.state.start('loseState');
+          }
+        }
+      }
+    ];
 
 var doors;
 var enemySpawns;
@@ -25,32 +181,33 @@ var characters;
 
 var battleState = {
   preload: function(){
+    game.cache.destroy();
     game.load.image('background','<%= asset_path "battle_background.png" %>');
     game.load.image('star','<%= asset_path "star.png" %>');
     game.load.image('attack','<%= asset_path "attack_button.png" %>');
     game.load.spritesheet('dude','<%= asset_path "dude.png" %>',32,48);
 
 
-    characters = fetch('http://localhost:3000/characters.json')
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(data){
-        charObj = {
-          name: data[0].character_name,
-          charClass: data[0].character_class,
-          charHp: 300,
-          charAttack: data[0].attack,
-          alive: true
-        };
+    // characters = fetch('http://localhost:3000/characters.json')
+    //   .then(function(response){
+    //     return response.json();
+    //   })
+    //   .then(function(data){
+    //     charObj = {
+    //       name: data[0].character_name,
+    //       charClass: data[0].character_class,
+    //       charHp: 300,
+    //       charAttack: data[0].attack,
+    //       alive: true
+    //     };
 
-        //game_units.push(charObj);
+    //     //gameUnits.push(charObj);
 
-        charText = game.add.text(50, 400,charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
+    //     charText = game.add.text(50, 400,charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
 
-        enemyText = game.add.text(20, 20,enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
+    //     enemyText = game.add.text(20, 20,enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
 
-      });
+    //   });
   },
   create: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -59,10 +216,10 @@ var battleState = {
     //star.body.enableBody = true;
 
     //star.body.immovable = true;
-    // game_units.push(charObj);
-    // setInterval(game_units.push(enemy),20000);
+    // gameUnits.push(charObj);
+    // setInterval(gameUnits.push(enemy),20000);
 
-    //console.log(game_units);
+    //console.log(gameUnits);
 
     //character2 = new Character(game,"tester","Warrior",200,20);
 
@@ -70,49 +227,101 @@ var battleState = {
 
     button.onInputUp.add(attackFunction, this);
 
-    // button.visible = false;
+
+    button.visible = false;
+    //button.visible = true;
+
+    gameUnits[0].act();
+    //next_turn();
 
     cursors = game.input.keyboard.createCursorKeys();
 
   },
   update: function(){
-    if(enemy.enemyHp  <= 0){
-      enemy.enemyHp = 200;
-      counter = 0;
-      changeWorldState();
-    }
-    if(counter % 2 != 0){
-      charObj.charHp = charObj.charHp - enemy.enemyAttack;
-      charText.setText(charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp);
-      counter++;
-    }
+    // if(enemy.enemyHp  <= 0){
+    //   enemy.enemyHp = 200;
+    //   counter = 0;
+    //   changeWorldState();
+    // }
+    // if(counter % 2 != 0){
+    //   charObj.charHp = charObj.charHp - enemy.enemyAttack;
+    //   charText.setText(charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp);
+    //   counter++;
+    // }
     // game.physics.arcade.collide(star,character2.player, changeWorldState);
     // character2.moveCharacter();
+    //next_turn();
   }
 };
 
 var attackFunction = function(){
-  enemy.enemyHp = enemy.enemyHp - charObj.charAttack;
-  enemyText.setText(enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp);
-  counter++;
+  // enemy.enemyHp = enemy.enemyHp - charObj.charAttack;
+  // enemyText.setText(enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp);
+  // counter++;
   // if(enemy.enemyHp < 1){
   //   enemy.alive = false;
   // }
   // button.visible = false;
-  // next_turn();
+  //next_turn();
+
+  //button.visible = false;
+  next_turn();
 }
 
+var isAlive = function(userOrNpc){
+  var arrayLength = this.length;
+  var totalHp = 0;
+  var unitsAlive = true;
+
+  if(userOrNpc == "enemy"){
+    for(var i = 0; i < arrayLength; i++){
+      if(this[i].isNpc){
+        totalHp += this[i].hp;
+      }
+    }
+  }
+
+  if(userOrNpc == "user"){
+    for(var i = 0; i < arrayLength; i++){
+      if(!this[i].isNpc){
+        totalHp += this[i].hp;
+      }
+    }
+  }
+
+  if(totalHp < 1){
+    unitsAlive = false;
+  }
+
+  return unitsAlive;
+}
+
+
 var next_turn = function(){
-  current_unit = game_units.shift();
+  current_unit = gameUnits.shift();
+
 
   if(current_unit.alive){
     current_unit.act();
-    game_units.push(current_unit);
+    console.log(current_unit.name + " does something");
+    gameUnits.push(current_unit);
   }
   else{
     next_turn();
   }
 }
+
+// var act = function(unit){
+//   if(unit.isNpc == false){
+//     button.visible = true;
+//     //console.log(button.visible);
+//     console.log("player does something");
+//   }
+//   if(unit.isNpc == true){
+//     button.visble = false;
+//     console.log("enemy does something");
+//   }
+// }
 
 var changeWorldState = function(){
   game.state.start('worldMap');
