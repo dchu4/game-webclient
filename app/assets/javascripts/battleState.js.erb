@@ -1,51 +1,53 @@
-var character2;
 var cursors;
-var star;
-var button;
+var attackButton;
 var charObj;
-var charText;
-var enemyText;
-// var enemy = {
-//       name: "Baddie", 
-//       enemyType: "Slime", 
-//       enemyHp: 200, 
-//       enemyAttack: 20, 
-//       alive: true, 
-//       isNpc: true
-//     };
+var charText = [];
+var deadCharText = [];
 
-var gameUnits = [
+var enemyText = [];
+
+var enemyButton1;
+var enemyButton2;
+var enemyButton3;
+var enemyButton4;
+var enemyButton5;
+
+var current_unit;
+
+var deadChars = [];
+
+var charsArray = [
       {
         name: "Clarence", 
         unitType: "Warrior", 
-        unitHp: 200, 
+        unitHp: 400, 
         unitAttack: 20, 
         alive: true, 
         isNpc: false,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
           }
         }
       },
       {
-        name: "Doge", 
+        name: "Bob", 
         unitType: "Rogue", 
         unitHp: 200, 
-        unitAttack: 20, 
+        unitAttack: 40, 
         alive: true, 
         isNpc: false,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
           }
         }
       },
@@ -53,36 +55,39 @@ var gameUnits = [
         name: "Nyan Cat", 
         unitType: "Beast Tamer", 
         unitHp: 200, 
-        unitAttack: 20, 
+        unitAttack: 60, 
         alive: true, 
         isNpc: false,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
           }
         }
       },
       {
         name: "Chewy", 
         unitType: "Wookie", 
-        unitHp: 200, 
-        unitAttack: 20, 
+        unitHp: 300, 
+        unitAttack: 100, 
         alive: true, 
         isNpc: false,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
           }
         }
-      },
+      }
+    ];
+
+var enemysArray = [
       {
         name: "The Blob", 
         unitType: "Slime", 
@@ -92,96 +97,209 @@ var gameUnits = [
         isNpc: true,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
+            arrayLength = charsArray.length;
+
+            var charIndex = Math.floor(Math.random() * arrayLength);
+
+            charsArray[charIndex].unitHp = charsArray[charIndex].unitHp - current_unit.unitAttack;
+
+            if(charsArray[charIndex].unitHp < 1){
+              charsArray[charIndex].alive = false;
+              charsArray[charIndex].unitHp = 0;
+              console.log("IT attacks " + charsArray[charIndex].name);
+              charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+              deadChars.push(charsArray.splice(charIndex,1));
+              deadCharText.push(charText.splice(charIndex,1));
+              return;
+            }
+
+            console.log("IT attacks " + charsArray[charIndex].name);
+            charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+            //next_turn();
           }
         }
       },
       {
         name: "Clamps", 
         unitType: "Robot", 
-        unitHp: 200, 
-        unitAttack: 20, 
+        unitHp: 400, 
+        unitAttack: 50, 
         alive: true, 
         isNpc: true,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
+            arrayLength = charsArray.length;
+
+            var charIndex = Math.floor(Math.random() * arrayLength);
+
+            charsArray[charIndex].unitHp = charsArray[charIndex].unitHp - current_unit.unitAttack;
+
+            if(charsArray[charIndex].unitHp < 1){
+              charsArray[charIndex].alive = false;
+              charsArray[charIndex].unitHp = 0;
+              console.log("IT attacks " + charsArray[charIndex].name);
+              charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+              deadChars.push(charsArray.splice(charIndex,1));
+              deadCharText.push(charText.splice(charIndex,1));
+              return;
+            }
+
+            console.log("IT attacks " + charsArray[charIndex].name);
+            charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+            //next_turn();
           }
         }
       },
       {
         name: "Scrooge", 
         unitType: "Person", 
-        unitHp: 200, 
-        unitAttack: 20, 
+        unitHp: 500, 
+        unitAttack: 40, 
         alive: true, 
         isNpc: true,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
+
+            arrayLength = charsArray.length;
+
+            var charIndex = Math.floor(Math.random() * arrayLength);
+
+            charsArray[charIndex].unitHp = charsArray[charIndex].unitHp - current_unit.unitAttack;
+
+            if(charsArray[charIndex].unitHp < 1){
+              charsArray[charIndex].alive = false;
+              charsArray[charIndex].unitHp = 0;
+              console.log("IT attacks " + charsArray[charIndex].name);
+              charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+              deadChars.push(charsArray.splice(charIndex,1));
+              deadCharText.push(charText.splice(charIndex,1));
+              return;
+            }
+
+            console.log("IT attacks " + charsArray[charIndex].name);
+            charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+            //next_turn();
           }
         }
       },
       {
         name: "Mr Crab", 
         unitType: "Crab", 
-        unitHp: 200, 
-        unitAttack: 20, 
+        unitHp: 300, 
+        unitAttack: 50, 
         alive: true, 
         isNpc: true,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
+            attackButton.visble = false;
+
+            arrayLength = charsArray.length;
+
+            var charIndex = Math.floor(Math.random() * arrayLength);
+
+            charsArray[charIndex].unitHp = charsArray[charIndex].unitHp - current_unit.unitAttack;
+
+            if(charsArray[charIndex].unitHp < 1){
+              charsArray[charIndex].alive = false;
+              charsArray[charIndex].unitHp = 0;
+              console.log("IT attacks " + charsArray[charIndex].name);
+              charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+              deadChars.push(charsArray.splice(charIndex,1));
+              deadCharText.push(charText.splice(charIndex,1));
+              return;
+            }
+
+            console.log("IT attacks " + charsArray[charIndex].name);
+            charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+            //next_turn();
           }
         }
       },
       {
         name: "IT", 
         unitType: "Clown", 
-        unitHp: 200, 
-        unitAttack: 20, 
+        unitHp: 100, 
+        unitAttack: 100, 
         alive: true, 
         isNpc: true,
         act: function(){
           if(this.isNpc == false){
-            button.visible = true;
-            //console.log(button.visible);
+            attackButton.visible = true;
+            //console.log(attackButton.visible);
           }
           if(this.isNpc == true){
-            button.visble = false;
-            game.state.start('loseState');
+            attackButton.visble = false;
+
+            arrayLength = charsArray.length;
+
+            var charIndex = Math.floor(Math.random() * arrayLength);
+
+            charsArray[charIndex].unitHp = charsArray[charIndex].unitHp - current_unit.unitAttack;
+
+            if(charsArray[charIndex].unitHp < 1){
+              charsArray[charIndex].alive = false;
+              charsArray[charIndex].unitHp = 0;
+              console.log("IT attacks " + charsArray[charIndex].name);
+              charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+              deadChars.push(charsArray.splice(charIndex,1));
+              deadCharText.push(charText.splice(charIndex,1));
+              return;
+            }
+
+            console.log("IT attacks " + charsArray[charIndex].name);
+            charText[charIndex].setText(charsArray[charIndex].name + "\n" + charsArray[charIndex].unitHp);
+            //next_turn();
+
+
+            // for(var i = 0; i < charsArray.length; i++){
+            //   if(charsArray[i].unitHp >= 1){
+            //     charsArray[i].unitHp = charsArray[i].unitHp - current_unit.unitAttack;
+            //     if(charsArray[i].unitHp < 1){
+            //       charsArray[i].alive = false;
+            //       charsArray[i].unitHp = 0;
+            //     }
+            //     console.log("IT attacks " + charsArray[i].name);
+            //     charText[i].setText(charsArray[i].name + "\n" + charsArray[i].unitHp);
+            //     next_turn();
+            //   }
+            // }
+            console.log("IT acted");
+            //game.state.start('loseState');
           }
         }
       }
     ];
 
-var doors;
-var enemySpawns;
-var chests;
+var unitsArray = charsArray.concat(enemysArray);
 
-var counter = 0;
+var actionMenu;
+var enemyMenu;
+var itemMenu;
 
 var characters;
 
 var battleState = {
   preload: function(){
-    game.cache.destroy();
+    //game.cache.destroy();
     game.load.image('background','<%= asset_path "battle_background.png" %>');
     game.load.image('star','<%= asset_path "star.png" %>');
     game.load.image('attack','<%= asset_path "attack_button.png" %>');
@@ -203,90 +321,84 @@ var battleState = {
 
     //     //gameUnits.push(charObj);
 
-    //     charText = game.add.text(50, 400,charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
-
-    //     enemyText = game.add.text(20, 20,enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp, {font: "30px Arial", fill: "#ffffff", align: "center"});
+    //     charText = game.add.text(50, 400,charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp, {font: "30px Arial", fill: "#ffffff", align: "center"});   
 
     //   });
   },
   create: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.add.sprite(0,0,'background');
-    //star = game.add.sprite(200,200,'star');
-    //star.body.enableBody = true;
 
-    //star.body.immovable = true;
-    // gameUnits.push(charObj);
-    // setInterval(gameUnits.push(enemy),20000);
+    actionMenu = game.add.group();
+    enemyMenu = game.add.group();
+    itemMenu = game.add.group();
 
-    //console.log(gameUnits);
+    //set up enemy and char array over here
 
-    //character2 = new Character(game,"tester","Warrior",200,20);
+    enemyButton1 = game.add.button(340,366,'attack');
+    enemyButton2 = game.add.button(340,400,'attack');
+    enemyButton3 = game.add.button(340,440,'attack');
+    enemyButton4 = game.add.button(340,480,'attack');
+    enemyButton5 = game.add.button(340,520,'attack');
 
-    button = game.add.button(560,366,'attack');
+    enemyButton1.onInputUp.add(attackEnemyOne,this);
+    enemyButton2.onInputUp.add(attackEnemyTwo,this);
+    enemyButton3.onInputUp.add(attackEnemyThree,this);
+    enemyButton4.onInputUp.add(attackEnemyFour,this);
+    enemyButton5.onInputUp.add(attackEnemyFive,this);
 
-    button.onInputUp.add(attackFunction, this);
+    enemyButton1.visible = false;
+    enemyButton2.visible = false;
+    enemyButton3.visible = false;
+    enemyButton4.visible = false;
+    enemyButton5.visible = false;
 
+    //enemyButton1.onInputUp.add(attackFunction,this);
 
-    button.visible = false;
-    //button.visible = true;
+    attackButton = game.add.button(560,366,'attack');
 
-    gameUnits[0].act();
-    //next_turn();
+    attackButton.onInputUp.add(attackFunction, this);
 
-    cursors = game.input.keyboard.createCursorKeys();
+    for(var i = 0; i < enemysArray.length; i++){
+         enemyText.push(game.add.text((120*i)+20, 20,enemysArray[i].name + "\n" + enemysArray[i].unitHp, {font: "30px Arial", fill: "#ffffff", align: "center"}));
+    }
+
+    for(var i = 0; i < charsArray.length; i++){
+         charText.push(game.add.text((120*i)+20, 200,charsArray[i].name + "\n" + charsArray[i].unitHp, {font: "30px Arial", fill: "#ffffff", align: "center"}));
+    }
+
+    actionMenu.add(attackButton);
+
+    next_turn();
+
+    //cursors = game.input.keyboard.createCursorKeys();
 
   },
   update: function(){
-    // if(enemy.enemyHp  <= 0){
-    //   enemy.enemyHp = 200;
-    //   counter = 0;
-    //   changeWorldState();
-    // }
-    // if(counter % 2 != 0){
-    //   charObj.charHp = charObj.charHp - enemy.enemyAttack;
-    //   charText.setText(charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp);
-    //   counter++;
-    // }
-    // game.physics.arcade.collide(star,character2.player, changeWorldState);
-    // character2.moveCharacter();
-    //next_turn();
+    if(!isAlive(charsArray)){
+      game.state.start('loseState');
+    }
+
+    if(!isAlive(enemysArray)){
+      game.state.start(game.cache.currentGameState);
+    }
   }
 };
 
-var attackFunction = function(){
-  // enemy.enemyHp = enemy.enemyHp - charObj.charAttack;
-  // enemyText.setText(enemy.name + "\n" + enemy.enemyType + "\n" + enemy.enemyHp);
-  // counter++;
-  // if(enemy.enemyHp < 1){
-  //   enemy.alive = false;
-  // }
-  // button.visible = false;
-  //next_turn();
+var attackFunction = function(numbers){
 
-  //button.visible = false;
-  next_turn();
+  //enemyHolder.unitHp = enemyHolder.unitHp - charHolder.unitAttack;
+  toggleVisible();
+ 
 }
 
-var isAlive = function(userOrNpc){
-  var arrayLength = this.length;
+var isAlive = function(arrayToCheck){
+  var arrayLength = arrayToCheck.length;
   var totalHp = 0;
   var unitsAlive = true;
 
-  if(userOrNpc == "enemy"){
-    for(var i = 0; i < arrayLength; i++){
-      if(this[i].isNpc){
-        totalHp += this[i].hp;
-      }
-    }
-  }
-
-  if(userOrNpc == "user"){
-    for(var i = 0; i < arrayLength; i++){
-      if(!this[i].isNpc){
-        totalHp += this[i].hp;
-      }
-    }
+  for(var i = 0; i < arrayLength; i++){
+    totalHp += arrayToCheck[i].unitHp;
   }
 
   if(totalHp < 1){
@@ -298,17 +410,102 @@ var isAlive = function(userOrNpc){
 
 
 var next_turn = function(){
-  current_unit = gameUnits.shift();
+  current_unit = unitsArray.shift();
+
+  console.log(current_unit.name + " " +current_unit.alive);
+
+  console.log(unitsArray);
 
 
   if(current_unit.alive){
     current_unit.act();
     console.log(current_unit.name + " does something");
-    gameUnits.push(current_unit);
+    unitsArray.push(current_unit);
+    if(current_unit.isNpc == true){
+      next_turn();
+    }
   }
   else{
     next_turn();
   }
+}
+
+var toggleVisible = function(){
+  if(enemysArray.length == 1){
+    enemyButton1.visible = !enemyButton1.visible;
+  }
+  else if(enemysArray.length == 2){
+    enemyButton1.visible = !enemyButton1.visible;
+    enemyButton2.visible = !enemyButton2.visible;
+  }
+  else if(enemysArray.length == 3){
+    enemyButton1.visible = !enemyButton1.visible;
+    enemyButton2.visible = !enemyButton2.visible;
+    enemyButton3.visible = !enemyButton3.visible;
+  }
+  else if(enemysArray.length == 4){
+    enemyButton1.visible = !enemyButton1.visible;
+    enemyButton2.visible = !enemyButton2.visible;
+    enemyButton3.visible = !enemyButton3.visible;
+    enemyButton4.visible = !enemyButton4.visible;
+  }
+  else{
+    enemyButton1.visible = !enemyButton1.visible;
+    enemyButton2.visible = !enemyButton2.visible;
+    enemyButton3.visible = !enemyButton3.visible;
+    enemyButton4.visible = !enemyButton4.visible;
+    enemyButton5.visible = !enemyButton5.visible;
+  }
+}
+
+var attackEnemyOne = function(){
+  enemysArray[0].unitHp = enemysArray[0].unitHp - current_unit.unitAttack;
+  if(enemysArray[0].unitHp < 1){
+    enemysArray[0].alive = false;
+    enemysArray[0].unitHp = 0;
+  }
+  enemyText[0].setText(enemysArray[0].name + "\n" + enemysArray[0].unitHp);
+  next_turn();
+}
+
+var attackEnemyTwo = function(){
+  enemysArray[1].unitHp = enemysArray[1].unitHp - current_unit.unitAttack;
+  if(enemysArray[1].unitHp < 1){
+    enemysArray[1].alive = false;
+    enemysArray[1].unitHp = 0;
+  }
+  enemyText[1].setText(enemysArray[1].name + "\n" + enemysArray[1].unitHp);
+  next_turn();
+}
+
+var attackEnemyThree = function(){
+  enemysArray[2].unitHp = enemysArray[2].unitHp - current_unit.unitAttack;
+  if(enemysArray[2].unitHp < 1){
+    enemysArray[2].alive = false;
+    enemysArray[2].unitHp = 0;
+  }
+  enemyText[2].setText(enemysArray[2].name + "\n" + enemysArray[2].unitHp);
+  next_turn();
+}
+
+var attackEnemyFour = function(){
+  enemysArray[3].unitHp = enemysArray[3].unitHp - current_unit.unitAttack;
+  if(enemysArray[3].unitHp < 1){
+    enemysArray[3].alive = false;
+    enemysArray[3].unitHp = 0;
+  }
+  enemyText[3].setText(enemysArray[3].name + "\n" + enemysArray[3].unitHp);
+  next_turn();
+}
+
+var attackEnemyFive = function(){
+  enemysArray[4].unitHp = enemysArray[4].unitHp - current_unit.unitAttack;
+  if(enemysArray[4].unitHp < 1){
+    enemysArray[4].alive = false;
+    enemysArray[4].unitHp = 0;
+  }
+  enemyText[4].setText(enemysArray[4].name + "\n" + enemysArray[4].unitHp);
+  next_turn();
 }
 
 // var act = function(unit){

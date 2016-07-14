@@ -75,6 +75,7 @@ var worldMap = {
 };
 
 var changeBattleState = function(enemySpawns, player){
+    game.cache.currentGameState = 'worldMap';
     game.state.start('battleState');
 }
 
