@@ -19,6 +19,10 @@ var dungeonOne;
 var dungeonTwo;
 var dungeonThree;
 
+var gameItems = [];
+var charsArray = [];
+var enemysArray = [];
+
 var worldMap = {
   preload: function(){
     game.load.tilemap('world_map', '<%= asset_path "world_map.json" %>', null, Phaser.Tilemap.TILED_JSON);
@@ -27,8 +31,16 @@ var worldMap = {
     game.load.spritesheet('char','<%= asset_path "character_sprite.png" %>',30,30);
   },
   create: function(){
+    gameItems = game.cache.gameItems;
+    charsArray = game.cache.charactersArray;
+    enemysArray = game.cache.enemysArray;
+
+    console.log(gameItems);
+    console.log(charsArray);
+    console.log(enemysArray);
+
     game.cache.currentGameState = 'worldMap';
-    // game.cache.nextGameState = 'worldMap';
+    game.cache.nextGameState = 'worldMap';
 
     map = game.add.tilemap('world_map');
 
@@ -124,7 +136,7 @@ var worldMap = {
         charPos.y = character.player.position.y + 15;
       }
     }
-    else{
+    else if(game.cache.nextGameState == 'worldMap'){
       charPos.x = character.player.position.x;
       charPos.y = character.player.position.y;
     }
@@ -151,5 +163,6 @@ var changeDungeonThreeState = function(dungeonThree, player){
 }
 
 var changeInventoryState = function(){
+  game.cache.nextGameState = 'inventoryState';
   game.state.start('inventoryState');
 }

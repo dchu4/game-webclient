@@ -33,36 +33,39 @@ var bootState = {
 
         game.cache.charactersArray = charsArray;
         game.cache.enemysArray = enemysArray;
+
+
+      fetch('http://localhost:3000/items.json')
+        .then(function(response){
+          return response.json();
+        })
+        .then(function(data){
+          for(var i = 0; i < data.length; i++){
+            itemObj = {
+              itemType: data[i].itemType,
+              itemName: data[i].itemName,
+              cureStatus: data[i].cureStatus,
+              attack: data[i].attack,
+              defense: data[i].defense,
+              magicDefense: data[i].magicDefense,
+              magicAttack: data[i].magicAttack,
+              recoveryAmount: data[i].recoveryAmount,
+              isEquipped: data[i].isEquipped,
+              quantity: data[i].quantity,
+              itemId: data[i].id
+            }
+
+            gameItems.push(itemObj);
+          };   
+
+          game.cache.gameItems = gameItems;
+
+          game.state.start('worldMap');
+      });      
+          
     });
 
 
 
-    fetch('http://localhost:3000/items.json')
-      .then(function(response){
-        return response.json();
-      })
-      .then(function(data){
-        for(var i = 0; i < data.length; i++){
-          itemObj = {
-            itemType: data[i].itemType,
-            itemName: data[i].itemName,
-            cureStatus: data[i].cureStatus,
-            attack: data[i].attack,
-            defense: data[i].defense,
-            magicDefense: data[i].magicDefense,
-            magicAttack: data[i].magicAttack,
-            recoveryAmount: data[i].recoveryAmount,
-            isEquipped: data[i].isEquipped,
-            quantity: data[i].quantity,
-            itemId: data[i].id
-          }
-
-          gameItems.push(itemObj);
-        };   
-
-        game.cache.gameItems = gameItems;
-
-    });      
-        game.state.start('worldMap');
   }
 }

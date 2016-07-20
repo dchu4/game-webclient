@@ -10,5 +10,5 @@ game.state.add('dungeonOneState', dungeonOneState);
 game.state.add('dungeonTwoState', dungeonTwoState);
 game.state.add('dungeonThreeState', dungeonThreeState);
 
-//game.state.start('bootState');
-game.state.start('worldMap');
+game.state.start('bootState');
+//game.state.start('worldMap');
