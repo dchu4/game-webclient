@@ -14,10 +14,14 @@
 //= require jquery_ujs
 //= require phaser
 //= require character
+//= require gameCharacter
+//= require inventoryState
 //= require bootState
-//= require dungeonOneState
-//= require battleState
 //= require worldMap
+//= require dungeonOneState
+//= require dungeonTwoState
+//= require dungeonThreeState
+//= require battleState
 //= require loseState
 //= require game
 //= require_tree .

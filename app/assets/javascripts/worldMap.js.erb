@@ -7,37 +7,54 @@ var blockedLayer;
 var objectLayer;
 var doors;
 var enemySpawns;
+var homes;
 
-var door;
+var charPos = {x: 700, y: 383}
+
+var inventory;
+
+var charImage;
+
+var dungeonOne;
+var dungeonTwo;
+var dungeonThree;
 
 var worldMap = {
   preload: function(){
-    game.load.image('star','<%= asset_path "star.png" %>');
-    game.load.tilemap('wolrd_map', '<%= asset_path "world_map.json" %>', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('world_map', '<%= asset_path "world_map.json" %>', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('game_tiles', '<%= asset_path "game_tiles.png" %>');
     game.load.spritesheet('tiles', '<%= asset_path "game_tiles.png" %>',32,32);
-    game.load.spritesheet('dude','<%= asset_path "dude.png" %>',32,48);
+    game.load.spritesheet('char','<%= asset_path "character_sprite.png" %>',30,30);
   },
   create: function(){
+    game.cache.currentGameState = 'worldMap';
+    // game.cache.nextGameState = 'worldMap';
 
-    map = game.add.tilemap('wolrd_map');
+    map = game.add.tilemap('world_map');
 
     map.addTilesetImage('game_tiles','game_tiles');
 
     backgroundLayer = map.createLayer('backgroundLayer');
     blockedLayer = map.createLayer('blockedLayer');
-    //objectLayer = map.createLayer('objectLayer');
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     map.setCollisionBetween(1,2000,true,'blockedLayer');
 
+    inventory = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+    inventory.onDown.add(changeInventoryState, this);
+
     doors = game.add.group();
     enemySpawns = game.add.group();
+    homes = game.add.group();
 
     map.objects['objectLayer'].forEach(function(element){
       if(element.properties.type == "door"){
         doors.create(element.x, (element.y - 32), 'tiles', element.properties.sprite);
+        
+      }
+      if(element.properties.type == "home"){
+        homes.create(element.x, (element.y - 32), 'tiles', element.properties.sprite);
         
       }
       if(element.properties.type == "enemy_spawn"){
@@ -45,22 +62,25 @@ var worldMap = {
       }
     });
 
+
     doors.enableBody = true;
     game.physics.enable(doors);
     doors.immovable = true;
+
+    dungeonOne = doors.children[0];
+    dungeonTwo = doors.children[1];
+    dungeonThree = doors.children[2];
+
+    // console.log(doors.children);
 
     enemySpawns.enableBody = true;
     game.physics.enable(enemySpawns);
     enemySpawns.immovable = true;
 
-    //console.log(game.cache.characterData);
 
-    if(game.cache.player_position){
+    if(charPos){
+      character = new Character(charPos.x,charPos.y,game,"tester","Warrior",200,20);
 
-      character = new Character(game.cache.player_position.x,game.cache.player_position.y,game,"tester","Warrior",200,20);
-    }
-    else{
-      character = new Character(200,200,game,"tester","Warrior",200,20);
     }
 
     cursors = game.input.keyboard.createCursorKeys();
@@ -68,19 +88,68 @@ var worldMap = {
   },
   update: function(){
     game.physics.arcade.collide(blockedLayer,character.player);
-    game.physics.arcade.overlap(doors, character.player, changeDungeonOneState, null, this);
+    game.physics.arcade.overlap(dungeonOne, character.player, changeDungeonOneState, null, this);
+    game.physics.arcade.overlap(dungeonThree, character.player, changeDungeonTwoState, null, this);
+    game.physics.arcade.overlap(dungeonTwo, character.player, changeDungeonThreeState, null, this);
+
     //game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
+    
     character.moveCharacter();
+  },
+  shutdown: function(){
+
+    if(game.cache.nextGameState == 'dungeonOneState'){
+      if(character.player.position.x < 32){
+        charPos.x = character.player.position.x + 15;
+        charPos.y = character.player.position.y;
+      }
+    }
+    else if(game.cache.nextGameState == 'dungeonTwoState'){
+      if(character.player.position.x < 32){
+        charPos.x = character.player.position.x + 15;
+        charPos.y = character.player.position.y;
+      }
+      if(character.player.position.y > 600){
+        charPos.x = character.player.position.x;
+        charPos.y = character.player.position.y - 20;
+      }
+    }
+    else if(game.cache.nextGameState == 'dungeonThreeState'){
+      if(character.player.position.x < 256){
+        charPos.x = character.player.position.x + 15;
+        charPos.y = character.player.position.y;
+      }
+      if(character.player.position.y < 32){
+        charPos.x = character.player.position.x;
+        charPos.y = character.player.position.y + 15;
+      }
+    }
+    else{
+      charPos.x = character.player.position.x;
+      charPos.y = character.player.position.y;
+    }
   }
 };
 
 var changeBattleState = function(enemySpawns, player){
-    game.cache.currentGameState = 'worldMap';
-    game.state.start('battleState');
+  game.state.start('battleState');
 }
 
-var changeDungeonOneState = function(doors, player){
-  game.cache.player_position = player.position;
-  //console.log(player.position);
+var changeDungeonOneState = function(dungeonOne, player){
+  game.cache.nextGameState = 'dungeonOneState';
   game.state.start('dungeonOneState');
+}
+
+var changeDungeonTwoState = function(dungeonTwo, player){
+  game.cache.nextGameState = 'dungeonTwoState';
+  game.state.start('dungeonTwoState');
+}
+
+var changeDungeonThreeState = function(dungeonThree, player){
+  game.cache.nextGameState = 'dungeonThreeState';
+  game.state.start('dungeonThreeState');
+}
+
+var changeInventoryState = function(){
+  game.state.start('inventoryState');
 }

@@ -1,0 +1,106 @@
+var charInventory = [];
+var inventoryText = ["one","two","three","four","five","six","seven","eight","nine","ten","one2","two2","three2","four2","five2","six2","seven2","eight2","nine2","ten2","one3","two3","three3","four3","five3","six3","seven3","eight3","nine3","ten3","one4","two4","three4","four4","five4","six4","seven4","eight4","nine4","ten4"];
+
+var inventoryOffset = 19;
+
+var inventoryIndex = 0;
+
+var textGroup = [];
+
+var previousState;
+
+var inventoryState = {
+  preload: function(){
+    game.load.image('background', '<%= asset_path "inventory.png" %>');
+  },
+
+  create: function(){
+
+    console.log(game.cache.nextGameState);
+    console.log(game.cache.currentGameState);
+
+    game.add.sprite(0,0, 'background');
+
+    previousState = game.input.keyboard.addKey(Phaser.Keyboard.C);
+    previousState.onDown.add(changePreviousState, this);
+
+    charInventory = game.cache.charInventory;
+
+    //inventoryText.push();
+    for(var i = 50; i <= 590; i += 30){
+      textGroup.push(game.add.text(20,i, "", {font: "20px Arial", fill: "#ffffff", align: "center"}));
+    }
+
+    if(charInventory.length < 19){
+      for(var j = 0; j < charInventory.length; j++){
+        textGroup[j].setText(charInventory[j]);
+      }
+    }
+    else if(charInventory.length > 19){
+      for(var j = 0; j < 19; j++){
+        textGroup[j].setText(charInventory[j]);
+      }
+    }
+
+    // game.add.text(20,50, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,80, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,110, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,140, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,170, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,200, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,230, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,260, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,290, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,320, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,350, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,380, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,410, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,440, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,470, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,500, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,530, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,560, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // game.add.text(20,590, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    // //game.add.text(20,620, "Test", {font: "20px Arial", fill: "#ffffff", align: "center"});
+    game.add.text(300,5, "INVENTORY", {font: "35px Arial", fill: "#ffffff", align: "center"});
+
+  },
+
+  update: function(){
+  }
+}
+
+var displayInventory = function(){
+  if(inventoryText.length < 19){
+    // for(var j = 0; j < charInventory.length; j++){
+    //   textGroup[j].setText(inventoryText[j]);
+    // }
+  }
+  else if(inventoryText.length > 19){
+    for(var j = 0; j < 19; j++){
+      textGroup[j].setText(inventoryText[j]);
+    //console.log(textGroup[j]);
+    }
+  }
+}
+
+var nextPage = function(){
+  if(charInventory.length > 19){
+    inventoryOffset += 19;
+
+
+  }
+}
+
+var previousPage = function(){
+  if(inventoryOffset >= 19){
+    inventoryOffset -= 19;
+  }
+}
+
+var changePreviousState = function(){
+  textGroup.splice(0);
+  game.state.start(game.cache.currentGameState);
+}
+
+//     charText = game.add.text(50, 400,charObj.name + "\n" + charObj.charClass + "\n" + charObj.charHp, {font: "30px Arial", fill: "#ffffff", align: "center"}); 

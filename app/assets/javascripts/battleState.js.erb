@@ -15,6 +15,7 @@ var enemyButton5;
 var current_unit;
 
 var deadChars = [];
+var deadEnemys = [];
 
 var charsArray = [
       {
@@ -301,9 +302,7 @@ var battleState = {
   preload: function(){
     //game.cache.destroy();
     game.load.image('background','<%= asset_path "battle_background.png" %>');
-    game.load.image('star','<%= asset_path "star.png" %>');
     game.load.image('attack','<%= asset_path "attack_button.png" %>');
-    game.load.spritesheet('dude','<%= asset_path "dude.png" %>',32,48);
 
 
     // characters = fetch('http://localhost:3000/characters.json')
@@ -412,11 +411,6 @@ var isAlive = function(arrayToCheck){
 var next_turn = function(){
   current_unit = unitsArray.shift();
 
-  console.log(current_unit.name + " " +current_unit.alive);
-
-  console.log(unitsArray);
-
-
   if(current_unit.alive){
     current_unit.act();
     console.log(current_unit.name + " does something");
@@ -463,8 +457,17 @@ var attackEnemyOne = function(){
   if(enemysArray[0].unitHp < 1){
     enemysArray[0].alive = false;
     enemysArray[0].unitHp = 0;
+
+    enemyText[0].setText(enemysArray[0].name + "\n" + enemysArray[0].unitHp);
+    toggleVisible();
+
+    enemysArray.splice(0,1);
+    enemyText.splice(0,1);
+
+    next_turn();
   }
   enemyText[0].setText(enemysArray[0].name + "\n" + enemysArray[0].unitHp);
+  toggleVisible();
   next_turn();
 }
 
@@ -473,8 +476,17 @@ var attackEnemyTwo = function(){
   if(enemysArray[1].unitHp < 1){
     enemysArray[1].alive = false;
     enemysArray[1].unitHp = 0;
+
+    enemyText[1].setText(enemysArray[1].name + "\n" + enemysArray[1].unitHp);
+    toggleVisible();
+
+    enemysArray.splice(1,1);
+    enemyText.splice(1,1);
+
+    next_turn();
   }
   enemyText[1].setText(enemysArray[1].name + "\n" + enemysArray[1].unitHp);
+  toggleVisible();
   next_turn();
 }
 
@@ -483,8 +495,17 @@ var attackEnemyThree = function(){
   if(enemysArray[2].unitHp < 1){
     enemysArray[2].alive = false;
     enemysArray[2].unitHp = 0;
+
+    enemyText[2].setText(enemysArray[2].name + "\n" + enemysArray[2].unitHp);
+    toggleVisible();
+
+    enemysArray.splice(2,1);
+    enemyText.splice(2,1);
+
+    next_turn();
   }
   enemyText[2].setText(enemysArray[2].name + "\n" + enemysArray[2].unitHp);
+  toggleVisible();
   next_turn();
 }
 
@@ -493,8 +514,17 @@ var attackEnemyFour = function(){
   if(enemysArray[3].unitHp < 1){
     enemysArray[3].alive = false;
     enemysArray[3].unitHp = 0;
+
+    enemyText[3].setText(enemysArray[3].name + "\n" + enemysArray[3].unitHp);
+    toggleVisible();
+
+    enemysArray.splice(3,1);
+    enemyText.splice(3,1);
+
+    next_turn();
   }
   enemyText[3].setText(enemysArray[3].name + "\n" + enemysArray[3].unitHp);
+  toggleVisible();
   next_turn();
 }
 
@@ -503,8 +533,17 @@ var attackEnemyFive = function(){
   if(enemysArray[4].unitHp < 1){
     enemysArray[4].alive = false;
     enemysArray[4].unitHp = 0;
+
+    enemyText[4].setText(enemysArray[4].name + "\n" + enemysArray[4].unitHp);
+    toggleVisible();
+
+    enemysArray.splice(4,1);
+    enemyText.splice(4,1);
+
+    next_turn();
   }
   enemyText[4].setText(enemysArray[4].name + "\n" + enemysArray[4].unitHp);
+  toggleVisible();
   next_turn();
 }
 

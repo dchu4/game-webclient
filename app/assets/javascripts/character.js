@@ -6,13 +6,13 @@ function Character(xPos,yPos,game,name,characterClass,hp,attack){
   this.charName = name;
   this.charHp = hp;
   this.charAttack = attack;
-  this.player = game.add.sprite(xPos,yPos,'dude');
+  this.player = game.add.sprite(xPos,yPos,'char',3);
 
   game.physics.enable(this.player, Phaser.Physics.ARCADE);
   this.player.enableBody = true;
   this.player.body.immovable = false;
   this.player.body.collideWorldBounds = true;
-  this.player.body.setSize(20,32,5,16);
+  this.player.body.setSize(30,30);
 
   this.attackCharacter = function(enemy){
     enemy.hp = enemy.hp - this.attack;
