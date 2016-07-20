@@ -9,7 +9,7 @@ var doors;
 var enemySpawns;
 var homes;
 
-var charPos = {x: 700, y: 383}
+var charPos = {x: 700, y: 383};
 
 var inventory;
 
@@ -104,7 +104,7 @@ var worldMap = {
     game.physics.arcade.overlap(dungeonThree, character.player, changeDungeonTwoState, null, this);
     game.physics.arcade.overlap(dungeonTwo, character.player, changeDungeonThreeState, null, this);
 
-    //game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
+    game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
     
     character.moveCharacter();
   },
@@ -144,7 +144,7 @@ var worldMap = {
 };
 
 var changeBattleState = function(enemySpawns, player){
-  game.state.start('battleState');
+    game.state.start('battleState');
 }
 
 var changeDungeonOneState = function(dungeonOne, player){

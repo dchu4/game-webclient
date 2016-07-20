@@ -54,42 +54,36 @@ var dungeonOneState = {
     inventory.onDown.add(changeInventoryState, this);
 
     confirmationButton = game.input.keyboard.addKey(Phaser.Keyboard.X);
-    console.log(doors);
 
-      doors = game.add.group();
-      enemySpawns = game.add.group();
-      chests = game.add.group();
-    if(chests.children.length == 0){
+    doors = game.add.group();
+    enemySpawns = game.add.group();
+    chests = game.add.group();
 
-      map.objects['objectLayer'].forEach(function(element){
-        if(element.properties.type == "door"){
-          doors.create(element.x, (element.y - 32), 'tiles', element.properties.sprite);
-        }
-        if(element.properties.type == "enemy_spawn"){
-          enemySpawns.create(element.x, (element.y - 32), 'tiles', element.properties.sprite);
-        }
-        if(element.properties.type == "chest"){
-          chests.create(element.x, (element.y - 32), 'tiles', element.properties.sprite).isDestroyed = false;
-        }
-      });
+    map.objects['objectLayer'].forEach(function(element){
+      if(element.properties.type == "door"){
+        doors.create(element.x, (element.y - 32), 'tiles', element.properties.sprite);
+      }
+      if(element.properties.type == "enemy_spawn"){
+        enemySpawns.create(element.x, (element.y - 32), 'tiles', element.properties.sprite);
+      }
+      if(element.properties.type == "chest"){
+        chests.create(element.x, (element.y - 32), 'tiles', element.properties.sprite).isDestroyed = false;
+      }
+    });
 
-      console.log(map.objects['objectLayer'].length);
+    console.log(map.objects['objectLayer'].length);
 
-      doors.enableBody = true;
-      game.physics.enable(doors);
-      doors.immovable = true;
+    doors.enableBody = true;
+    game.physics.enable(doors);
+    doors.immovable = true;
 
-      enemySpawns.enableBody = true;
-      game.physics.enable(enemySpawns);
-      enemySpawns.immovable = true;
+    enemySpawns.enableBody = true;
+    game.physics.enable(enemySpawns);
+    enemySpawns.immovable = true;
 
-      chests.enableBody = true;
-      game.physics.enable(chests);
-      chests.immovable = true;
-    }
-    else{
-      console.log("Group was saved.");
-    }
+    chests.enableBody = true;
+    game.physics.enable(chests);
+    chests.immovable = true;
     // else{
     //   doors = game.add.group();
     //   enemySpawns = game.add.group();
@@ -139,13 +133,11 @@ var dungeonOneState = {
     game.physics.arcade.collide(blockedLayer,character.player);
     game.physics.arcade.overlap(chests,character.player,openChest, null, this);
     game.physics.arcade.overlap(doors, character.player, changeWorldState, null, this);
-    //game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
+    game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
 
     character.moveCharacter();
   },
   shutdown: function(){
-
-    removedChests = removedChests;
 
     if(character.player.position.y < 32){
       dungeonOnePos.x = character.player.position.x;
@@ -163,17 +155,12 @@ var openChest = function(player, chest){
     chest.kill();
     console.log(chest.isDestroyed);
     chest.isDestroyed = true;
-    removedChests.push(chest);
-    chests.remove(chest);
-    console.log(chests);
-    // // itemListLength = game.cache.gameItems.length;
-    // // randItem = Math.floor(Math.random() * itemListLength)
 
     // // charInventory.push(game.cache.gameItems[randItem]);
-    itemListLength = inventoryText.length;
+    itemListLength = game.cache.gameItems.length;
     randItem = Math.floor(Math.random() * itemListLength)
 
-    charInventory.push(inventoryText[randItem]);
+    charInventory.push(game.cache.gameItems[randItem].itemName);
 
     game.cache.charInventory = charInventory;
 
@@ -191,6 +178,5 @@ var changeWorldState = function(doors, player){
 }
 
 var changeInventoryState = function(){
-  console.log(chests);
   game.state.start('inventoryState');
 }

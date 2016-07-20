@@ -304,8 +304,9 @@ var characters;
 var battleState = {
   preload: function(){
     //game.cache.destroy();
-    game.load.image('background','<%= asset_path "battle_background.png" %>');
+    game.load.image('background','<%= asset_path "battle_phase.png" %>');
     game.load.image('attack','<%= asset_path "attack_button.png" %>');
+    game.load.spritesheet('buttons', '<%= asset_path "buttons.png" %>',260,42);
 
 
     // characters = fetch('http://localhost:3000/characters.json')
@@ -354,11 +355,11 @@ var battleState = {
 
     //set up enemy and char array over here
 
-    enemyButton1 = game.add.button(340,366,'attack');
-    enemyButton2 = game.add.button(340,400,'attack');
-    enemyButton3 = game.add.button(340,440,'attack');
-    enemyButton4 = game.add.button(340,480,'attack');
-    enemyButton5 = game.add.button(340,520,'attack');
+    enemyButton1 = game.add.button(280,428,'buttons',attackEnemyOne,this,4,4,4);
+    enemyButton2 = game.add.button(280,470,'buttons',attackEnemyTwo,this,5,5,5);
+    enemyButton3 = game.add.button(280,512,'buttons',attackEnemyThree,this,6,6,6);
+    enemyButton4 = game.add.button(280,554,'buttons',attackEnemyFour,this,7,7,7);
+    enemyButton5 = game.add.button(280,596,'buttons',attackEnemyFive,this,8,8,8);
 
     enemyButton1.onInputUp.add(attackEnemyOne,this);
     enemyButton2.onInputUp.add(attackEnemyTwo,this);
@@ -374,9 +375,10 @@ var battleState = {
 
     //enemyButton1.onInputUp.add(attackFunction,this);
 
-    attackButton = game.add.button(560,366,'attack');
+    attackButton = game.add.button(540,428,'buttons',attackFunction,this,0);
+    //attackButton.setFrames(0);
 
-    attackButton.onInputUp.add(attackFunction, this);
+    //attackButton.onInputUp.add(attackFunction, this);
 
     for(var i = 0; i < randomEnemys.length; i++){
          enemyText.push(game.add.text((180*i)+20, 20,randomEnemys[i].name + "\n" + "HP: " + randomEnemys[i].charHp, {font: "30px Arial", fill: "#ffffff", align: "center"}));

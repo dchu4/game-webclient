@@ -43,6 +43,8 @@ var dungeonThreeState = {
     inventory = game.input.keyboard.addKey(Phaser.Keyboard.Z);
     inventory.onDown.add(changeInventoryState, this);
 
+    confirmationButton = game.input.keyboard.addKey(Phaser.Keyboard.X);
+
     doors = game.add.group();
     enemySpawns = game.add.group();
     chests = game.add.group();
@@ -80,7 +82,7 @@ var dungeonThreeState = {
   },
   update: function(){
     game.physics.arcade.collide(blockedLayer,character.player);
-    game.physics.arcade.collide(chests,character.player);
+    game.physics.arcade.overlap(chests,character.player,openChest, null, this);
     game.physics.arcade.overlap(doors, character.player, changeWorldState, null, this);
     game.physics.arcade.overlap(enemySpawns, character.player, changeBattleState, null, this);
 
@@ -100,7 +102,9 @@ var dungeonThreeState = {
 };
 
 var changeBattleState = function(enemySpawns, player){
-  game.state.start('battleState');
+  if((Math.floor(Math.random() * 300)+ 1) == 150){
+    game.state.start('battleState');
+  }
 }
 
 var changeWorldState = function(doors, player){
@@ -110,4 +114,27 @@ var changeWorldState = function(doors, player){
 
 var changeInventoryState = function(){
   game.state.start('inventoryState');
+}
+
+var openChest = function(player, chest){
+  if(confirmationButton.isDown){
+    chest.kill();
+    console.log(chest.isDestroyed);
+    chest.isDestroyed = true;
+    removedChests.push(chest);
+    chests.remove(chest);
+    console.log(chests);
+    // // itemListLength = game.cache.gameItems.length;
+    // // randItem = Math.floor(Math.random() * itemListLength)
+
+    // // charInventory.push(game.cache.gameItems[randItem]);
+    itemListLength = game.cache.gameItems.length;
+    randItem = Math.floor(Math.random() * itemListLength)
+
+    charInventory.push(game.cache.gameItems[randItem].itemName);
+
+    game.cache.charInventory = charInventory;
+
+    console.log("tried to open");
+  }
 }
